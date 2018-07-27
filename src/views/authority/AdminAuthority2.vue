@@ -3,7 +3,7 @@
   <div class="app-container">
     <el-button style='margin:0 0 20px 20px;' type="primary" v-on:click="watchtable=false">添加B类管理员</el-button>
     <el-button style='margin:0 0 20px 20px;' type="primary" v-on:click="watchtable=true">返回</el-button>
-    <el-table style="margin-left:50px" v-if="watchtable==true" :data="list.slice((pageNo-1)*pageSize,pageNo*pageSize)" v-loading="listLoading" element-loading-text="拼命加载中" border fit highlight-current-row>
+    <el-table style="margin:50px" v-if="watchtable==true" :data="list.slice((pageNo-1)*pageSize,pageNo*pageSize)" v-loading="listLoading" element-loading-text="拼命加载中" border fit highlight-current-row>
       <el-table-column align="center" label='Id' width="250">
         <template slot-scope="scope">
           {{scope.row.UserID}}
@@ -31,7 +31,7 @@
       </el-table-column>
     </el-table>
     <!--分页-->
-    <div class="pagination-container" style = "margin-left:480px" >
+    <div  v-if="watchtable==true"  class="pagination-container" style = "margin-left:480px" >
       <el-pagination background @current-change="handleIndexChange"
                       :page-size="pageSize" :current-page.sync="pageNo" layout="total, prev, pager, next" :total="totalDataNumber">
       </el-pagination>
@@ -180,7 +180,7 @@ export default {
   },
   methods: {
     fetchB_AdminData() {
-        axios.get('http://localhost:3000/api/getB_AdminInfo').then(
+        axios.get('http://' + port.info.host + ':' + port.info.port + '/api/getB_AdminInfo').then(
         (res) => {
           this.list = res.data.list.rows
           this.totalDataNumber = res.data.list.count;
@@ -214,7 +214,7 @@ export default {
       },
       handleUpdate(){
         let that = this
-        axios.post('http://localhost:3000/api/addAdmin',
+        axios.post('http://' + port.info.host + ':' + port.info.port + '/api/addAdmin',
         {
             Account:this.personalInfo.Account,
             Password:this.personalInfo.Password,
